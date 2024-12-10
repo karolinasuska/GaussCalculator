@@ -33,7 +33,6 @@
             resultsTextBox = new RichTextBox();
             calculateButton = new Button();
             chooseFileButton = new Button();
-            openFileDialog1 = new OpenFileDialog();
             cCheckBox = new CheckBox();
             asmCheckBox = new CheckBox();
             libraryMenu = new Label();
@@ -53,6 +52,7 @@
             label9 = new Label();
             label10 = new Label();
             label11 = new Label();
+            fileDialog = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)threadTrackBar).BeginInit();
             SuspendLayout();
             // 
@@ -109,10 +109,7 @@
             chooseFileButton.TabIndex = 4;
             chooseFileButton.Text = "Choose file";
             chooseFileButton.UseVisualStyleBackColor = false;
-            // 
-            // openFileDialog1
-            // 
-            openFileDialog1.FileName = "openFileDialog1";
+            chooseFileButton.Click += ChooseFileButton;
             // 
             // cCheckBox
             // 
@@ -125,6 +122,7 @@
             cCheckBox.TabIndex = 5;
             cCheckBox.Text = "C#";
             cCheckBox.UseVisualStyleBackColor = true;
+            cCheckBox.CheckedChanged += CCheckBox_CheckedChanged;
             // 
             // asmCheckBox
             // 
@@ -137,6 +135,7 @@
             asmCheckBox.TabIndex = 6;
             asmCheckBox.Text = "Asm";
             asmCheckBox.UseVisualStyleBackColor = true;
+            asmCheckBox.CheckedChanged += AsmCheckBox_CheckedChanged;
             // 
             // libraryMenu
             // 
@@ -159,6 +158,7 @@
             threadTrackBar.Size = new Size(282, 45);
             threadTrackBar.TabIndex = 8;
             threadTrackBar.Value = 1;
+            threadTrackBar.Scroll += ThreadTrackBar_Scroll;
             // 
             // threadsMenu
             // 
@@ -319,6 +319,10 @@
             label11.TabIndex = 23;
             label11.Text = "Results";
             // 
+            // fileDialog
+            // 
+            fileDialog.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -383,5 +387,6 @@
         private Label label9;
         private Label label10;
         private Label label11;
+        private OpenFileDialog fileDialog;
     }
 }

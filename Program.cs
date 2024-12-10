@@ -17,6 +17,8 @@ namespace GaussCalculator
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             AllocConsole();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             try
             {
                 FileGenerator.GenerateSampleFiles();
