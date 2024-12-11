@@ -96,7 +96,7 @@
             calculateButton.TabIndex = 3;
             calculateButton.Text = "Calculate";
             calculateButton.UseVisualStyleBackColor = false;
-            calculateButton.Click += calculateButton_Click;
+            calculateButton.Click += CalculateButton_Click;
             // 
             // chooseFileButton
             // 
@@ -353,6 +353,8 @@
             Controls.Add(resultsTextBox);
             Controls.Add(fileContentsTextBox);
             Controls.Add(title);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
             Name = "Form1";
             Text = "Gauss calculator";
             ((System.ComponentModel.ISupportInitialize)threadTrackBar).EndInit();
