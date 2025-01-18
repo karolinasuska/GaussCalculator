@@ -369,7 +369,6 @@
         private RichTextBox resultsTextBox;
         private Button calculateButton;
         private Button chooseFileButton;
-        private OpenFileDialog openFileDialog1;
         private CheckBox cCheckBox;
         private CheckBox asmCheckBox;
         private Label libraryMenu;

@@ -1,9 +1,16 @@
+using EquationSolverC;
+using System.Diagnostics;
+
 namespace GaussCalculator
 {
     public partial class Form1 : Form
     {
 
-        private List<(double[,], double[])> systems;
+        private List<(double[,], double[])> systems = new List<(double[,], double[])>();
+        private List<long> cTimes = new List<long>();
+        private List<long> asmTimes = new List<long>();
+        private int calculationCount = 0;
+
         public Form1()
         {
             InitializeComponent();
@@ -34,7 +41,6 @@ namespace GaussCalculator
             Console.WriteLine($"Ustawiono {selectedThreadCount} w¹tków.");
         }
 
-
         private void CalculateButton_Click(object sender, EventArgs e)
         {
 
@@ -52,21 +58,49 @@ namespace GaussCalculator
 
             var solutions = new List<double[]>();
 
-            Parallel.ForEach(systems, new ParallelOptions { MaxDegreeOfParallelism = selectedThreadCount }, system =>
+            Stopwatch calculationTime = new Stopwatch();
+
+            
+            if(cCheckBox.Checked)
             {
-                var (coefficients, results) = system;
-
-                double[,] coefficientsCopy = (double[,])coefficients.Clone();
-                double[] resultsCopy = (double[])results.Clone();
-
-                double[] solution = EquationSolver.Solve(coefficientsCopy, resultsCopy, selectedThreadCount);
-
-                lock (solutions)
+                Parallel.ForEach(systems, new ParallelOptions { MaxDegreeOfParallelism = selectedThreadCount }, system =>
                 {
-                    solutions.Add(solution);
+                    var (coefficients, results) = system;
+
+                    double[,] coefficientsCopy = (double[,])coefficients.Clone();
+                    double[] resultsCopy = (double[])results.Clone();
+
+                    double[] solution = null;
+                    calculationTime.Start();
+                    solution = EquationSolverC.EquationSolverC.Solve(coefficientsCopy, resultsCopy);
+                    
+
+                    lock (solutions)
+                    {
+                        solutions.Add(solution);
+
+                    }
+
                     resultsTextBox.BeginInvoke(new Action(() => DisplaySolution(solution)));
-                }
-            });
+                });
+                calculationTime.Stop();
+
+                long elapsedNanoseconds = (calculationTime.ElapsedTicks * 1_000_000_000) / Stopwatch.Frequency;
+                cTimes.Add(elapsedNanoseconds);
+                double averageTime = cTimes.TakeLast(5).Average();
+                cTime.Text = $"{averageTime:F0} ns";
+
+            }
+            else if(asmCheckBox.Checked)
+            {
+                MessageBox.Show("Jeszcze nie zaimplementowano.", "B³¹d.");
+                return;
+            }
+            else
+            {
+                MessageBox.Show("Proszê wybraæ metodê obliczeñ: C# lub ASM.", "B³¹d");
+                return;
+            }
             MessageBox.Show("Obliczenia zakoñczone.", "Sukces!");
         }
 
